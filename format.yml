@@ -1,0 +1,22 @@
+graph :
+  rankdir : LR
+
+nodes :
+  shape : rectangle
+
+develops on :
+  style : filled
+  arrowhead : open
+
+similar to :
+  color : red
+  style : dashed
+  arrowhead : none
+
+year nodes :
+  shape : none
+
+year edges :
+  style : dashed
+  color : gray
+  arrowhead : open
