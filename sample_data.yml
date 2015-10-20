@@ -1,6 +1,7 @@
 ---
 dempster1977maximum :
   title       : Maximum likelihood from incomplete data via the EM algorithm
+  authors     : Dempster, Laird and Rubin
   short name  : EM
   year        : 1977
   description : Develop the EM method for general problems.
@@ -10,6 +11,7 @@ dempster1977maximum :
 shepp1982maximum :
   title       : >
     Maximum likelihood reconstruction for emission tomography
+  authors     : Shepp and Vardi
   short name  : EM for PET
   year        : 1982
   description : Use of EM methods for iterative PET reconstruction.
@@ -21,6 +23,7 @@ hebert1989generalized :
   title       : >
     A generalized EM algorithm for 3-D Bayesian reconstruction from
     Poisson data using Gibbs priors
+  authors     : Hebert and Leahy
   short name  : MAP
   year        : 1989
   description : A method for incorporating MAP into EM.
@@ -32,6 +35,7 @@ green1990bayesian :
   title       : >
     Bayesian reconstructions from emission tomography data using a
     modified EM algorithm
+  authors     : Green
   short name  : MAP OSL
   year        : 1990
   description : A simpler method for incorporating MAP into EM.
@@ -45,6 +49,7 @@ hudson1994accelerated :
   title : >
     Accelerated image reconstruction using ordered subsets of
     projection data
+  authors     : Hudson and Larkin
   short name  : OSEM
   year : 1994
   description : An acceleration method for EM.

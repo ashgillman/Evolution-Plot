@@ -3,6 +3,7 @@ relationships between them.
 """
 from functools import partial
 import argparse
+from textwrap import wrap
 import yaml
 from graphviz import Digraph
 
@@ -19,9 +20,18 @@ def compose(*a):
     except:
         return a[0]
 
+
 def load_data(file):
     with open(file) as f:
       return yaml.safe_load(f)
+
+
+def make_multi_font_label(labels, attributes, width=30):
+    return '< {} >'.format('<BR/>'.join(
+        '<FONT {}>{}</FONT>'.format(
+            ' '.join('{}="{}"'.format(k, v) for k, v in attr.items()),
+            '<BR/>'.join(wrap(label, width)))
+        for label, attr in zip(labels, attributes)))
 
 
 def generate_evolution_plot(data):
@@ -47,9 +57,11 @@ def generate_evolution_plot(data):
 
         for node in year_nodes:
             name = node['short name']
-            #label = XML()
-            #label.font
-            year_g.node(name, **styles['nodes'])
+            label = make_multi_font_label(*zip(*(
+                (name,                {'POINT-SIZE': 20}),
+                (node['authors'],     {'POINT-SIZE':  8, 'COLOR': 'red'}),
+                (node['description'], {'POINT-SIZE': 10}))))
+            year_g.node(name, label, **styles['nodes'])
 
         g.subgraph(year_g)
 
@@ -71,7 +83,7 @@ def generate_evolution_plot(data):
         add_edges(node, 'develops on')
         add_edges(node, 'similar to')
     g.render('img')
-    print(g.source)
+    return g
 
 
 if __name__ == '__main__':
@@ -81,4 +93,4 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data_file = args.data
     data = load_data(data_file)
-    generate_evolution_plot(data)
+    print(generate_evolution_plot(data))
