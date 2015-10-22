@@ -19,6 +19,19 @@ shepp1982maximum :
     - dempster1977maximum
   similar to  :
 
+lange1984reconstruction :
+  title       : >
+    EM reconstruction algorithms for emission and transmission
+    tomography
+  authors     : Lange and Carson
+  short name  : EM Generalized
+  year        : 1984
+  description : >
+    Formalisation and generalisation of Shepp and Vardi's work.
+  develops on :
+    - shepp1982maximum
+  similar to  :
+
 hebert1989generalized :
   title       : >
     A generalized EM algorithm for 3-D Bayesian reconstruction from
@@ -31,7 +44,6 @@ hebert1989generalized :
     - shepp1982maximum
 
 green1990bayesian :
-  id          : green1990bayesian
   title       : >
     Bayesian reconstructions from emission tomography data using a
     modified EM algorithm
@@ -45,14 +57,53 @@ green1990bayesian :
     - hebert1989generalized
 
 hudson1994accelerated :
-  id : hudson1994accelerated
   title : >
     Accelerated image reconstruction using ordered subsets of
     projection data
   authors     : Hudson and Larkin
   short name  : OSEM
-  year : 1994
+  year        : 1994
   description : An acceleration method for EM.
   develops on :
     - shepp1982maximum
   similar to  :
+
+carson2003design :
+  title : >
+    Design of a motion-compensation OSEM list-mode algorithm for
+    resolution-recovery reconstruction for the HRRT
+  authors     : Carson, Barker, Liow and Johnson
+  short name  : MOLAR
+  year        : 2003
+  description : >
+    Modern MCIR methodology, with consideration for many physical
+    effects.
+  develops on :
+    - shepp1982maximum
+    - hudson1994accelerated
+    - watson2000new
+    - levkovitz2001design
+    - bai2002model
+    - bloomfield2003design
+  similar to  :
+
+watson2000new :
+  title       : New, faster image-based scatter correction for 3D PET
+  authors     : Watson
+  short name  : Efficient Scatter
+  year        : 2000
+  description : >
+    A method for efficient and accurate scatter estimation.
+  develops on :
+    - barney1991object
+    - watson1996single
+  similar to  :
+
+# dummy :
+#   title : >
+#   authors     : 
+#   short name  : 
+#   year        : 
+#   description : >
+#   develops on :
+#   similar to  :
