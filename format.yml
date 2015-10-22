@@ -4,6 +4,28 @@ graph :
 nodes :
   shape : rectangle
 
+node name font :
+  POINT-SIZE : 20
+node name width : 13
+
+node title font :
+  POINT-SIZE : 8
+  COLOR      : gray
+node title width : 35
+
+node authors font :
+  POINT-SIZE : 8
+  COLOR      : red
+node authors width : 35
+
+node description font :
+  POINT-SIZE : 10
+node description width : 30
+
+unknown nodes :
+  color : gray
+  fontcolor : gray
+
 develops on :
   style : filled
   arrowhead : open

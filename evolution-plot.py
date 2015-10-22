@@ -52,6 +52,7 @@ def add_edges(g, node, relation, styles):
                 link_name = data[link]['short name']
                 g.edge(link_name, name, **styles[relation])
             except:
+                g.node(link, **styles['unknown nodes'])
                 g.edge(link, name, **styles[relation])
 
 
@@ -68,10 +69,14 @@ def generate_evolution_plot(data):
     for node in data.values():
         name = node['short name']
         label = make_multi_font_label(*zip(*(
-            (name,                {'POINT-SIZE': 20}, 13),
-            (node['title'],       {'POINT-SIZE':  8, 'COLOR': 'gray'}, 35),
-            (node['authors'],     {'POINT-SIZE':  8, 'COLOR': 'red'}, 35),
-            (node['description'], {'POINT-SIZE': 10}, 30))))
+            (name,                styles['node name font'],
+             styles['node name width']),
+            (node['title'],       styles['node title font'],
+             styles['node title width']),
+            (node['authors'],     styles['node authors font'],
+             styles['node authors width']),
+            (node['description'], styles['node description font'],
+             styles['node description width']))))
         subgraphs[node['year']].node(name, label, **styles['nodes'])
 
     # plot edges
