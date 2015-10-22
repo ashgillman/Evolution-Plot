@@ -1,6 +1,9 @@
+#!/usr/bin/env python3
+
 """Plots the evolution of an algorithm(s) by defining the
 relationships between them.
 """
+
 from functools import partial
 import argparse
 from textwrap import wrap
