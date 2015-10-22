@@ -4,8 +4,9 @@
 relationships between them.
 """
 
-from functools import partial
+from collections import defaultdict
 import argparse
+from functools import partial
 from textwrap import wrap
 import yaml
 from graphviz import Digraph
@@ -29,62 +30,67 @@ def load_data(file):
       return yaml.safe_load(f)
 
 
-def make_multi_font_label(labels, attributes, width=30):
+def make_multi_font_label(labels, attributes, widths):
     return '< {} >'.format('<BR/>'.join(
         '<FONT {}>{}</FONT>'.format(
             ' '.join('{}="{}"'.format(k, v) for k, v in attr.items()),
             '<BR/>'.join(wrap(label, width)))
-        for label, attr in zip(labels, attributes)))
+        for label, attr, width in zip(labels, attributes, widths)))
+
+
+def by_year_subgraph_constructor():
+    subgraph = Digraph()
+    subgraph.body.append('rank=same')
+    return subgraph
+
+
+def add_edges(g, node, relation, styles):
+    if relation in node and node[relation]:
+        name = node['short name']
+        for link in node[relation]:
+            try:
+                link_name = data[link]['short name']
+                g.edge(link_name, name, **styles[relation])
+            except:
+                g.edge(link, name, **styles[relation])
 
 
 def generate_evolution_plot(data):
     g = Digraph(format='png')
     styles = load_data(STYLE_FILE)
 
-    # apply graph styles
+    # apply global graph styles
     g.body.extend('{}={}'.format(k, v)
                   for k, v in styles['graph'].items())
 
-    # plot years and all nodes (by year)
-    unique = compose(sorted, list, set)
-    years = unique([node['year'] for node in data.values()])
-    years = list(map(str, years)) # stringify
-    for year in years:
-        year_g = Digraph()
-        year_g.body.append('rank=same')
-
-        year_g.node(year, **styles['year nodes'])
-
-        year_nodes = [node for node in data.values()
-                      if str(node['year']) == year]
-
-        for node in year_nodes:
-            name = node['short name']
-            label = make_multi_font_label(*zip(*(
-                (name,                {'POINT-SIZE': 20}),
-                (node['authors'],     {'POINT-SIZE':  8, 'COLOR': 'red'}),
-                (node['description'], {'POINT-SIZE': 10}))))
-            year_g.node(name, label, **styles['nodes'])
-
-        g.subgraph(year_g)
-
-    # year edges
-    for first, second in zip(years, years[1:]):
-        g.edge(first, second, **styles['year edges'])
+    # plot nodes
+    subgraphs = defaultdict(by_year_subgraph_constructor)
+    for node in data.values():
+        name = node['short name']
+        label = make_multi_font_label(*zip(*(
+            (name,                {'POINT-SIZE': 20}, 13),
+            (node['title'],       {'POINT-SIZE':  8, 'COLOR': 'gray'}, 35),
+            (node['authors'],     {'POINT-SIZE':  8, 'COLOR': 'red'}, 35),
+            (node['description'], {'POINT-SIZE': 10}, 30))))
+        subgraphs[node['year']].node(name, label, **styles['nodes'])
 
     # plot edges
     for id, node in data.items():
         name = node['short name']
 
-        # plot node edges
-        def add_edges(node, relation):
-            if relation in node and node[relation]:
-                for link in node[relation]:
-                    link_name = data[link]['short name']
-                    g.edge(link_name, name, **styles[relation])
+        add_edges(g, node, 'develops on', styles)
+        add_edges(g, node, 'similar to', styles)
 
-        add_edges(node, 'develops on')
-        add_edges(node, 'similar to')
+    # plot year legend
+    years = sorted(list(subgraphs.keys()))
+    for year, graph in subgraphs.items():
+        graph.node(str(year), **styles['year nodes'])
+    for first, second in zip(years, years[1:]):
+        g.edge(str(first), str(second), **styles['year edges'])
+
+    for graph in subgraphs.values():
+        g.subgraph(graph)
+
     g.render('img')
     return g
 
