@@ -1,6 +1,7 @@
 """Plots the evolution of an algorithm(s) by defining the
 relationships between them.
 """
+import os
 from functools import partial
 import argparse
 from textwrap import wrap
@@ -10,7 +11,9 @@ from graphviz import Digraph
 # TODO: remove
 from pprint import pprint
 
-STYLE_FILE = 'format.yml'
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+STYLE_FILE = os.path.join(__location__, 'format.yml')
 
 def compose(*a):
     def composed(f, g, *args, **kwargs):
@@ -27,6 +30,10 @@ def load_data(file):
 
 
 def make_multi_font_label(labels, attributes, width=30):
+    def ensure_string(maybe_string):
+        return '' if maybe_string is None else str(maybe_string)
+    labels = map(ensure_string, labels)
+
     return '< {} >'.format('<BR/>'.join(
         '<FONT {}>{}</FONT>'.format(
             ' '.join('{}="{}"'.format(k, v) for k, v in attr.items()),
@@ -76,8 +83,16 @@ def generate_evolution_plot(data):
         # plot node edges
         def add_edges(node, relation):
             if relation in node and node[relation]:
-                for link in node[relation]:
-                    link_name = data[link]['short name']
+                for link_obj in node[relation]:
+                    try:
+                        link = ''.join(list(link_obj.keys())) # if dict
+                    except:
+                        link = link_obj
+                    try:
+                        link_name = data[link]['short name']
+                    except:
+                        link_name = link
+                    print(link_name)
                     g.edge(link_name, name, **styles[relation])
 
         add_edges(node, 'develops on')

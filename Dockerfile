@@ -10,6 +10,5 @@ RUN apt-get update && apt-get install -qy \
 RUN pip3 install graphviz pyyaml
 
 ADD . /app
-WORKDIR /app
 
-ENTRYPOINT ["python3", "evolution-plot.py"]
+ENTRYPOINT ["python3", "/app/evolution-plot.py"]
