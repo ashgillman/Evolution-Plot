@@ -4,9 +4,10 @@
 relationships between them.
 """
 
+import os
 from collections import defaultdict
-import argparse
 from functools import partial
+import argparse
 from textwrap import wrap
 import yaml
 from graphviz import Digraph
@@ -14,7 +15,9 @@ from graphviz import Digraph
 # TODO: remove
 from pprint import pprint
 
-STYLE_FILE = 'format.yml'
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
+STYLE_FILE = os.path.join(__location__, 'format.yml')
 
 def compose(*a):
     def composed(f, g, *args, **kwargs):
@@ -31,6 +34,10 @@ def load_data(file):
 
 
 def make_multi_font_label(labels, attributes, widths):
+    def ensure_string(maybe_string):
+        return '' if maybe_string is None else str(maybe_string)
+    labels = map(ensure_string, labels)
+
     return '< {} >'.format('<BR/>'.join(
         '<FONT {}>{}</FONT>'.format(
             ' '.join('{}="{}"'.format(k, v) for k, v in attr.items()),
@@ -47,13 +54,21 @@ def by_year_subgraph_constructor():
 def add_edges(g, node, relation, styles):
     if relation in node and node[relation]:
         name = node['short name']
-        for link in node[relation]:
+        for link_obj in node[relation]:
+            # link might be listed as string or as only key of a dict
+            try:
+                link = ''.join(list(link_obj.keys())) # if dict
+            except:
+                link = link_obj
+
+            # link name may or may not be defined
             try:
                 link_name = data[link]['short name']
-                g.edge(link_name, name, **styles[relation])
             except:
-                g.node(link, **styles['unknown nodes'])
-                g.edge(link, name, **styles[relation])
+                link_name = link
+                g.node(link_name, **styles['unknown nodes'])
+
+            g.edge(link_name, name, **styles[relation])
 
 
 def generate_evolution_plot(data):
