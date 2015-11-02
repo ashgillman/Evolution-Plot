@@ -10,7 +10,7 @@ node name width : 13
 
 node title font :
   POINT-SIZE : 8
-  COLOR      : gray
+  COLOR      : gray40
 node title width : 35
 
 node authors font :
@@ -24,7 +24,7 @@ node description width : 30
 
 unknown nodes :
   color : gray
-  fontcolor : gray
+  fontcolor : gray40
 
 develops on :
   style : filled
