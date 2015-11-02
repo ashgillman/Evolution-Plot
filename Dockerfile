@@ -1,3 +1,4 @@
+# -*- docker-image-name: "ashgillman/evolution-plot" -*-
 FROM debian:jessie
 MAINTAINER Ashley Gillman "ashley.gillman@uqconnect.edu.au"
 
