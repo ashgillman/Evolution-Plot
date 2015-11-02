@@ -35,11 +35,11 @@ def load_data(file):
 
 def make_multi_font_label(labels, attributes, widths):
     def ensure_string(maybe_string):
-        return '' if maybe_string is None else str(maybe_string)
+        return ' ' if not maybe_string else str(maybe_string)
     labels = map(ensure_string, labels)
 
     return '< {} >'.format('<BR/>'.join(
-        '<FONT {}>{}</FONT>'.format(
+        '<FONT {}>{} </FONT>'.format(
             ' '.join('{}="{}"'.format(k, v) for k, v in attr.items()),
             '<BR/>'.join(wrap(label, width)))
         for label, attr, width in zip(labels, attributes, widths)))
