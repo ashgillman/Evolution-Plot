@@ -6,21 +6,21 @@ nodes :
 
 node name font :
   POINT-SIZE : 20
-node name width : 13
+node name width : 20
 
 node title font :
   POINT-SIZE : 8
   COLOR      : gray40
-node title width : 35
+node title width : 50
 
 node authors font :
   POINT-SIZE : 8
   COLOR      : red
-node authors width : 35
+node authors width : 50
 
 node description font :
   POINT-SIZE : 10
-node description width : 30
+node description width : 45
 
 unknown nodes :
   color : gray
