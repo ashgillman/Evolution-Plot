@@ -29,8 +29,8 @@ def compose(*a):
 
 
 def load_data(file):
-    with open(file) as f:
-      return yaml.safe_load(f)
+    with open(file, encoding='utf-8') as f:
+        return yaml.safe_load(f)
 
 
 def make_multi_font_label(labels, attributes, widths):
@@ -122,4 +122,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
     data_file = args.data
     data = load_data(data_file)
-    print(generate_evolution_plot(data))
+    graph = generate_evolution_plot(data)
+    print(str(str(graph).encode(
+        'ascii', errors='backslashreplace').decode()))
